@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     protected static final String prefAuthUIDKey = "com.app.chatapp.firebaseauth.user.uid";
 
     private String userUID;
+    private String userPhoneNo;
     private FirebaseRecyclerAdapter contactAdapter;
     private RecyclerView contactRecyclerView;
     private DatabaseReference userDBReference;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
             saveMyUID(auth.getCurrentUser().getUid());
+            userPhoneNo = auth.getCurrentUser().getPhoneNumber();
             initDB();
             initUI();
         } else {
@@ -85,13 +87,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        contactAdapter.startListening();
+        if (contactAdapter != null) {
+            contactAdapter.startListening();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        contactAdapter.stopListening();
+        if (contactAdapter != null) {
+            contactAdapter.stopListening();
+        }
     }
 
     private void initDB() {
@@ -128,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 holder.bind(MainActivity.this, model);
             }
         };
+        contactAdapter.startListening();
     }
 
 
@@ -181,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                                         userDBReference.child(data.getKey())
                                                 .child("contacts")
                                                 .child(userUID)
-                                                .child("phoneNo").setValue(contact.getPhoneNo());
+                                                .child("phoneNo").setValue(userPhoneNo);
 
                                         Toast.makeText(MainActivity.this, "Contact Added.", Toast.LENGTH_SHORT).show();
                                     }
@@ -243,6 +250,7 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     saveMyUID(user.getUid());
+                    userPhoneNo = user.getPhoneNumber();
                     initDB();
                     userDBReference.child(userUID).child("phoneNo").setValue(user.getPhoneNumber());
                 }
@@ -267,6 +275,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        contactAdapter.stopListening();
+        if (contactAdapter != null) {
+            contactAdapter.stopListening();
+        }
     }
 }

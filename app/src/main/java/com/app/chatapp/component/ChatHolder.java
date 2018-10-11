@@ -1,9 +1,7 @@
 package com.app.chatapp.component;
 
-import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
-import android.icu.util.TimeZone;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,11 +21,6 @@ public class ChatHolder extends RecyclerView.ViewHolder {
 
     public void bind(Chat chat) {
         messageText.setText(chat.getMessage());
-
-        Calendar cal = Calendar.getInstance();
-        TimeZone tz = cal.getTimeZone();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        sdf.setTimeZone(tz);
-        timeText.setText(sdf.format(chat.getTimestampUTC()));
+        timeText.setText(DateFormat.format("dd/MM/yyyy HH:mm",chat.getTimestampUTC()));
     }
 }
