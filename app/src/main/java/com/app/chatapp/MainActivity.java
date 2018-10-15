@@ -20,11 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.chatapp.component.ContactHolder;
-import com.app.chatapp.models.Chat;
 import com.app.chatapp.models.Contact;
 import com.app.chatapp.models.User;
 import com.firebase.ui.auth.AuthUI;
